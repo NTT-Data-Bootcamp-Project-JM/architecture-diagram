@@ -1,0 +1,107 @@
+<mxfile host="Electron" agent="Cursor">
+  <diagram id="runtime-architecture" name="architecture-diagram">
+    <mxGraphModel dx="2049" dy="1219" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1050" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="gw" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#1D4ED8;fontColor=#0F172A;strokeWidth=2;fontFamily=Segoe UI;fontSize=14;align=center;verticalAlign=middle;" value="ms-gateway :8080&#xa;Spring Cloud Gateway MVC&#xa;JWT filter · lb:// discovery" vertex="1">
+          <mxGeometry height="80" width="300" x="560" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="platform" parent="1" style="swimlane;startSize=32;rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;swimlaneFillColor=#FFFBEB;strokeColor=#B45309;fontColor=#0F172A;fontFamily=Segoe UI;fontSize=14;fontStyle=1;strokeWidth=2;" value="Platform — config + discovery" vertex="1">
+          <mxGeometry height="220" width="420" x="1050" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="cfg" parent="platform" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#B45309;fontColor=#0F172A;strokeWidth=2;fontFamily=Segoe UI;fontSize=14;align=center;" value="ms-config-server :8888&#xa;native profile&#xa;bank.* · Eureka · Redis · Kafka · Resilience4j · springdoc" vertex="1">
+          <mxGeometry height="78" width="380" x="20" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="eur" parent="platform" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#B45309;fontColor=#0F172A;strokeWidth=2;fontFamily=Segoe UI;fontSize=14;align=center;" value="ms-eureka-server :8761&#xa;in-memory service registry" vertex="1">
+          <mxGeometry height="60" width="380" x="20" y="138" as="geometry" />
+        </mxCell>
+        <mxCell id="business" parent="1" style="swimlane;startSize=32;rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;swimlaneFillColor=#EFF6FF;strokeColor=#1D4ED8;fontColor=#0F172A;fontFamily=Segoe UI;fontSize=14;fontStyle=1;strokeWidth=2;" value="Business services · RxJava 3 · OpenAPI contract-first" vertex="1">
+          <mxGeometry height="320" width="1460" x="40" y="350" as="geometry" />
+        </mxCell>
+        <mxCell id="auth" parent="business" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F2FE;strokeColor=#0369A1;fontColor=#0F172A;strokeWidth=2;fontFamily=Segoe UI;fontSize=14;align=center;" value="ms-auth :8081&#xa;register · login · JWT&#xa;DB: bank-auth&#xa;route: /api/v1/auth/**" vertex="1">
+          <mxGeometry height="240" width="260" x="20" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="cus" parent="business" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F2FE;strokeColor=#0369A1;fontColor=#0F172A;strokeWidth=2;fontFamily=Segoe UI;fontSize=14;align=center;" value="ms-customer :8082&#xa;customers CRUD&#xa;DB: bank-customer&#xa;Redis: document-types · profiles&#xa;route: /api/v1/customers/**" vertex="1">
+          <mxGeometry height="240" width="270" x="300" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="acc" parent="business" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F2FE;strokeColor=#0369A1;fontColor=#0F172A;strokeWidth=2;fontFamily=Segoe UI;fontSize=14;align=center;" value="ms-account :8083&#xa;accounts · movements · debit cards&#xa;DB: bank-account&#xa;Redis: account-types · product-rules&#xa;sync REST → Customer · Credit&#xa;routes: accounts · movements · transfers&#xa;debit-cards · account-reports" vertex="1">
+          <mxGeometry height="240" width="290" x="590" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="crd" parent="business" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F2FE;strokeColor=#0369A1;fontColor=#0F172A;strokeWidth=2;fontFamily=Segoe UI;fontSize=14;align=center;" value="ms-credit :8084&#xa;loans · cards · credit movements&#xa;DB: bank-credit&#xa;sync REST → Customer&#xa;routes: loans · credit-cards&#xa;credit-movements · debt-status · reports" vertex="1">
+          <mxGeometry height="240" width="280" x="900" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="ynk" parent="business" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F2FE;strokeColor=#0369A1;fontColor=#0F172A;strokeWidth=2;fontFamily=Segoe UI;fontSize=14;align=center;" value="ms-yanki :8085&#xa;wallets · phone P2P&#xa;DB: bank-yanki&#xa;route: /api/v1/wallets/**" vertex="1">
+          <mxGeometry height="240" width="240" x="1200" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="data" parent="1" style="swimlane;startSize=32;rounded=1;whiteSpace=wrap;html=1;fillColor=#E2E8F0;swimlaneFillColor=#F8FAFC;strokeColor=#475569;fontColor=#0F172A;fontFamily=Segoe UI;fontSize=14;fontStyle=1;strokeWidth=2;" value="Data layer" vertex="1">
+          <mxGeometry height="280" width="1460" x="40" y="750" as="geometry" />
+        </mxCell>
+        <mxCell id="mongo" parent="data" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#CCFBF1;strokeColor=#0F766E;fontColor=#0F172A;strokeWidth=2;fontFamily=Segoe UI;fontSize=14;align=center;" value="MongoDB&#xa;one database per service" vertex="1">
+          <mxGeometry height="150" width="220" x="80" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="redis" parent="data" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#DCFCE7;strokeColor=#15803D;fontColor=#0F172A;strokeWidth=2;fontFamily=Segoe UI;fontSize=14;align=center;" value="Redis&#xa;catalog caches" vertex="1">
+          <mxGeometry height="150" width="220" x="480" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="kafka" parent="data" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE7F3;strokeColor=#BE185D;fontColor=#0F172A;strokeWidth=2;fontFamily=Segoe UI;fontSize=14;align=center;" value="Apache Kafka :9092&#xa;&#xa;yanki.wallet.operation&#xa;Yanki → Account&#xa;&#xa;yanki.wallet.result&#xa;Account → Yanki&#xa;&#xa;credit.payment.requested&#xa;Account → Credit" vertex="1">
+          <mxGeometry height="210" width="420" x="900" y="48" as="geometry" />
+        </mxCell>
+        <mxCell id="e-gw-auth" edge="1" parent="1" source="gw" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#475569;strokeWidth=1.5;exitX=0.15;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="auth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-gw-cus" edge="1" parent="1" source="gw" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#475569;strokeWidth=1.5;exitX=0.35;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="cus">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-gw-acc" edge="1" parent="1" source="gw" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#475569;strokeWidth=1.5;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="acc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-gw-crd" edge="1" parent="1" source="gw" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#475569;strokeWidth=1.5;exitX=0.65;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="crd">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-gw-ynk" edge="1" parent="1" source="gw" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#475569;strokeWidth=1.5;exitX=0.85;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="ynk">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-gw-platform" edge="1" parent="1" source="gw" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;endFill=0;dashed=1;dashPattern=8 8;strokeColor=#B45309;strokeWidth=1.5;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.35;entryDx=0;entryDy=0;" target="platform">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-business-platform" edge="1" parent="1" source="business" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;endFill=0;dashed=1;dashPattern=8 8;strokeColor=#B45309;strokeWidth=1.5;exitX=1;exitY=0.2;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="platform">
+          <mxGeometry relative="1" x="0.1382" as="geometry">
+            <Array as="points">
+              <mxPoint x="1560" y="414" />
+              <mxPoint x="1560" y="130" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-business-mongo" edge="1" parent="1" source="business" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#0F766E;strokeWidth=1.5;exitX=0.15;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontColor=#0F766E;fontFamily=Segoe UI;fontSize=14;fontStyle=1;labelBackgroundColor=#CCFBF1;" target="mongo" value="all 5 services">
+          <mxGeometry relative="1" x="-0.5531" y="-9" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="259" y="730" />
+              <mxPoint x="230" y="730" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e-cus-redis" edge="1" parent="1" source="cus" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#15803D;strokeWidth=1.5;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.35;entryY=0;entryDx=0;entryDy=0;" target="redis">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-acc-redis" edge="1" parent="1" source="acc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#15803D;strokeWidth=1.5;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.65;entryY=0;entryDx=0;entryDy=0;" target="redis">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-ynk-kafka" edge="1" parent="1" source="ynk" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;strokeColor=#BE185D;strokeWidth=1.5;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" target="kafka">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-acc-kafka" edge="1" parent="1" source="acc" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;strokeColor=#BE185D;strokeWidth=1.5;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.35;entryY=0;entryDx=0;entryDy=0;" target="kafka">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-crd-kafka" edge="1" parent="1" source="crd" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;startArrow=none;strokeColor=#BE185D;strokeWidth=1.5;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.55;entryY=0;entryDx=0;entryDy=0;" target="kafka">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1080" y="700" />
+              <mxPoint x="1171" y="700" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
